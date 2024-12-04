@@ -1,5 +1,3 @@
-Aqui está o arquivo **README.md**:
-
 # 🌍 API de Agência de Viagens
 
 Bem-vindo à API de Agência de Viagens! Esta API foi desenvolvida para auxiliar agências de turismo e aplicativos de terceiros no gerenciamento de destinos e avaliações. 🚀
@@ -23,6 +21,7 @@ A API segue os padrões RESTful, garantindo integração fácil e eficiente com 
 ### **Cadastrar Destino**
 - **URL:** `/api/destinos`
 - **Método:** `POST`
+- **Role Necessária:** `ROLE_ADMIN`
 - **Descrição:** Cadastra um novo destino de viagem.
 - **Corpo da Requisição:**
   ```json
@@ -36,11 +35,13 @@ A API segue os padrões RESTful, garantindo integração fácil e eficiente com 
 ### **Listar Destinos**
 - **URL:** `/api/destinos`
 - **Método:** `GET`
+- **Role Necessária:** `ROLE_USER`
 - **Descrição:** Retorna a lista de todos os destinos cadastrados.
 
 ### **Pesquisar Destinos**
 - **URL:** `/api/destinos/pesquisar`
 - **Método:** `GET`
+- **Role Necessária:** `ROLE_USER`
 - **Descrição:** Pesquisa destinos por nome ou localização.
 - **Parâmetros Opcionais:**
   - `nome`: Nome do destino.
@@ -49,11 +50,13 @@ A API segue os padrões RESTful, garantindo integração fácil e eficiente com 
 ### **Visualizar Detalhes de um Destino**
 - **URL:** `/api/destinos/{id}`
 - **Método:** `GET`
+- **Role Necessária:** `ROLE_USER`
 - **Descrição:** Retorna informações detalhadas de um destino específico.
 
 ### **Avaliar Destino**
 - **URL:** `/api/destinos/{id}/avaliar`
 - **Método:** `PATCH`
+- **Role Necessária:** `ROLE_USER`
 - **Descrição:** Avalia um destino com uma nota de 1 a 10.
 - **Parâmetro na URL:**
   - `nota`: Nota a ser atribuída ao destino.
@@ -61,6 +64,7 @@ A API segue os padrões RESTful, garantindo integração fácil e eficiente com 
 ### **Excluir Destino**
 - **URL:** `/api/destinos/{id}`
 - **Método:** `DELETE`
+- **Role Necessária:** `ROLE_ADMIN`
 - **Descrição:** Exclui um destino do sistema.
 
 ---
@@ -73,11 +77,15 @@ A API segue os padrões RESTful, garantindo integração fácil e eficiente com 
    git clone https://github.com/JeanCarlosHP/travel-agency-api-senai.git
    cd travel-agency-api-senai
    ```
-3. Compile e execute o projeto:
+3. Suba os containers Docker:
+   ```bash
+   docker-compose up -d
+   ```
+4. Compile e execute o projeto:
    ```bash
    mvn spring-boot:run
    ```
-4. A API estará disponível em: `http://localhost:8080`.
+5. A API estará disponível em: `http://localhost:8080`.
 
 ---
 
@@ -86,6 +94,7 @@ A API segue os padrões RESTful, garantindo integração fácil e eficiente com 
 ### **Cadastrar Destino**
 ```bash
 curl -X POST http://localhost:8080/api/destinos \
+-u admin:admin123 \
 -H "Content-Type: application/json" \
 -d '{
   "nome": "Paris",
@@ -96,33 +105,33 @@ curl -X POST http://localhost:8080/api/destinos \
 
 ### **Listar Destinos**
 ```bash
-curl -X GET http://localhost:8080/api/destinos
+curl -X GET http://localhost:8080/api/destinos -u user:user123
 ```
 
 ### **Pesquisar Destinos**
 Pesquisar por nome:
 ```bash
-curl -X GET "http://localhost:8080/api/destinos/pesquisar?nome=Paris"
+curl -X GET "http://localhost:8080/api/destinos/pesquisar?nome=Paris" -u user:user123
 ```
 
 Pesquisar por localização:
 ```bash
-curl -X GET "http://localhost:8080/api/destinos/pesquisar?localizacao=Fran%C3%A7a"
+curl -X GET "http://localhost:8080/api/destinos/pesquisar?localizacao=Fran%C3%A7a" -u user:user123
 ```
 
 ### **Visualizar Detalhes de um Destino**
 ```bash
-curl -X GET http://localhost:8080/api/destinos/1
+curl -X GET http://localhost:8080/api/destinos/1 -u user:user123
 ```
 
 ### **Avaliar Destino**
 ```bash
-curl -X PATCH "http://localhost:8080/api/destinos/1/avaliar?nota=9"
+curl -X PATCH "http://localhost:8080/api/destinos/1/avaliar?nota=9" -u user:user123
 ```
 
 ### **Excluir Destino**
 ```bash
-curl -X DELETE http://localhost:8080/api/destinos/1
+curl -X DELETE http://localhost:8080/api/destinos/1 -u admin:admin123
 ```
 
 ---
